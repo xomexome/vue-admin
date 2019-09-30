@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>后台管理</title>
+
+    <!-- jq -->
+    <script src="/jq/jquery-3.3.1.min.js"></script>
+    <script src="/jq/jquery.cookie.js"></script>
+    <!-- Bootstrap -->
+    <link href="/jq/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/jq/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!--css样式-->
+    <link rel="stylesheet" type="text/css" href="/css/public.css" />
+</head>
+<style>
+.head{
+    /* width: 1920px; */
+    height: 60px;
+    background-color: #212121;
+    /*不换行*/
+    white-space: nowrap;
+}
+.div-head a{
+    border-radius: 3px;
+    padding: 8px;
+    color: #bfbfbf;
+    text-decoration:none;    /*下划线*/
+    margin-right: 10px;
+}
+/*经过变色*/
+.navigation a:hover{
+    background-color: #ffffff20;
+    color: white;
+    border: 0px
+}
+.div-head{
+    margin: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+/*头像*/
+.HeadPortrait{
+    background-color: #212121;
+    border-radius: 50% !important;
+    width: 40px;
+}
+.button-head{
+    border-radius: 5px;
+    background-color: #212121;
+    border: 0px;
+    color: white;
+    margin-top: -17px;
+    padding: 5px;
+}
+/*进过变色*/
+.button-head:hover,.button-head:focus,.button-head:active{
+    background-color: #ffffff3d;
+    color: white;
+    border: 0px;
+}
+.dropdown-menu a{
+    text-align: center;
+}
+/*经过变色*/
+.dropdown-menu a:hover{
+    background-color: #fff !important;
+    border: 0px
+}
+/*修改框架css*/
+.dropdown-menu{
+    min-width:123px !important;
+    width: 145px;
+}
+</style>
+<script>
+function clearCookies(){
+    console.log('删除cookie')
+    $.cookie('asd',123)
+}
+</script>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top head">
+        <div class="div-head">
+            <div class="navigation">
+                <a href="/">Home</a>
+                <a href="/upload">上传数据</a>
+                <a href="/adminUser">后台管理员列表</a>
+                <a href="/mobileUser">手机用户列表</a>
+                <a href="/comment">用户评论</a>
+                <a href="/like">喜欢/不喜欢</a>
+            </div>
+            <% if(session.user){ %>
+            <!--右上角-->
+            <div class="dropdown" style="float: right">
+                <button class="btn btn-default button-head" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <img src="/images/wr5jfi6ysvx8htflrjgq.png" class="HeadPortrait"></span>
+                    <%= session.user %>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="margin-top: 20px">
+                    <li><a href="#">账号：<%= session.user %></a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/signout" onclick="clearCookies()">退出</a></li>
+                </ul>
+            </div>
+            <% } %>
+        </div>
+    </nav>
+    <div class="head" style="margin-bottom: 10px">占位</div>

@@ -1,0 +1,42 @@
+<% include header.html %>
+<style>
+.title-row td{
+    font-weight: 600;
+}
+tr td{
+    white-space: nowrap;
+}
+/*居中*/
+td{
+    text-align: center;
+    
+    vertical-align: middle !important;
+    width: 33.3%;
+}
+</style>
+<!-- <script type="text/javaScript">
+// $(document).ready(){
+$(function(){
+    $("td").css('vertical-align','middle');
+})
+</script> -->
+<div>
+    <table class="table table-striped">
+        <tr class="title-row">
+            <td>ID</td>
+            <td>用户名</td>
+            <td>头像</td>
+        </tr>
+        <% users.forEach(function(user,i){ %>
+        <tr>
+            <td><%=  user.id %></td>
+            <td><%=  user.userName %></td>
+            <td><img src="/images/<%=  user.avator %>.png"></td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+
+<%- include('paging.html',{type:'mobileUser'}) %>
+</body>
+</html>

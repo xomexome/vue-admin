@@ -1,0 +1,147 @@
+<% include header.html %>
+<style>
+.edit{
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #bfbfbf;
+    padding: 15px;
+    width: 70%
+}
+.div-display{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.div-display div{
+    width: 32%;
+}
+/*不换行*/
+label{
+    white-space: nowrap;
+}
+/*边框样式*/
+.video{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.video input,img{
+    margin: 9px 12px;
+}
+</style>
+<div class="edit">
+    <form enctype="multipart/form-data" action='<%= video.id %>' enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label>电影名称：</label>
+            <input type="text" class="form-control" placeholder="电影名称" name="videoName" autocomplete="off" value="<%=  video.name%>">
+        </div>
+        <div class="form-group div-display">
+            <div>
+                <label>电影国家：</label>
+                <select class="form-control" name="videoCountry">
+                    <option value="中国">中国</option>
+                    <option value="美国">美国</option>
+                    <option value="英国">英国</option>
+                    <option value="法国">法国</option>
+                    <option value="日本">日本</option>
+                    <option value="泰国">泰国</option>
+                    <option value="韩国">韩国</option>
+                    <option value="印度">印度</option>
+                    <option value="其他">其他</option>
+                    <option selected value="<%= video.country %>"><%= video.country %></option>
+                </select>
+            </div>
+            <div style="margin: 0px 2%">
+                <label>电影分类：</label>
+                <select class="form-control" name="videoClassify">
+                    <option value="电影">电影</option>
+                    <option value="电视剧">电视剧</option>
+                    <option value="综艺">综艺</option>
+                    <option value="动漫">动漫</option>
+                    <option value="纪录片">纪录片</option>
+                    <option value="其他">其他</option>
+                    <option selected value="<%= video.classify %>"><%= video.classify %></option>
+                </select>
+            </div>
+            <div>
+                <label>上映时间：</label>
+                <input class="form-control" type="date" name="videoTime" placeholder="影视时间" value="<%= video.time1 %>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>电影封面：</label>
+            <div class="video">
+                <input type="file" name="upload" id="file" class="filepath" onchange="changepic(this)" value="<%= video.img %>">
+                <img src="<% video.img %>" id="show" width="200" name='videofile'>
+            </div>
+        </div>
+        <div class="form-group div-display">
+            <div>
+                <label>电影评分：</label>
+                <select class="form-control" name="videoStar">
+                    <option value="10.0">10.0</option>
+                    <option value="9.0">9.0</option>
+                    <option value="8.0">8.0</option>
+                    <option value="7.0">7.0</option>
+                    <option value="6.0">6.0</option>
+                    <option value="5.0">5.0</option>
+                    <option value="4.0">4.0</option>
+                    <option value="3.0">3.0</option>
+                    <option value="2.0">2.0</option>
+                    <option value="1.0">1.0</option>
+                    <option selected value="<%= video.star %>"><%= video.star %></option>
+                </select>
+            </div>
+            <div style="margin: 0px 2%">
+                <label>电影时长(分钟)：</label>
+                <input type="text" class="form-control" name="videoTimeLong" placeholder="影视时长"  value="<%= video.timelong %>">
+            </div>
+            <div>
+                <label>电影类型：</label>
+                <select class="form-control" name="videoType">
+                    <option value="动作">动作</option>
+                    <option value="喜剧">喜剧</option>
+                    <option value="爱情">爱情</option>
+                    <option value="剧情">剧情</option>
+                    <option value="古装">古装</option>
+                    <option value="历史">历史</option>
+                    <option value="战争">战争</option>
+                    <option value="科幻">科幻</option>
+                    <option value="惊悚">惊悚</option>
+                    <option value="恐怖">恐怖</option>
+                    <option value="冒险">冒险</option>
+                    <option value="纪录片">纪录片</option>
+                    <option value="武侠">武侠</option>
+                    <option value="动画">动画</option>
+                    <option value="犯罪">犯罪</option>
+                    <option value="脱口秀">脱口秀</option>
+                    <option value="成人">成人</option>
+                    <option value="儿童">儿童</option>
+                    <option selected value="<%= video.type %>"><%= video.type %></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>电影演员：</label>
+            <input type="text" class="form-control" placeholder="电影演员" name="videoActors" autocomplete="off" value="<%=  video.actors%>">
+        </div>
+        <div class="form-group">
+            <label>电影描述：</label>
+            <textarea style="resize:vertical" placeholder="影视描述" class="form-control" name="videoDetail"><%= video.detail %></textarea>
+        </div>
+        <button class="btn btn-default">Submit</button>
+    </form>
+</div>
+</body>
+<script>
+//图片
+function changepic() {
+    //图片预览
+    var reads= new FileReader();
+    f=document.getElementById('file').files[0];
+    reads.readAsDataURL(f);
+    reads.onload=function (e) {
+        document.getElementById('show').src=this.result;
+    };
+}
+</script>
+</html>

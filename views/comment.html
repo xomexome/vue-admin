@@ -1,0 +1,47 @@
+<% include header.html %>
+<style>
+.title-row td{
+    font-weight: 600;
+}
+tr td{
+    white-space: nowrap;
+}
+/*居中*/
+td{
+    text-align: center;
+    vertical-align: middle !important;
+    width: 33.3%;
+}
+</style>
+<!-- <script type="text/javaScript">
+// $(document).ready(){
+$(function(){
+    $("td").css('vertical-align','middle');
+})
+</script> -->
+<div>
+    <table class="table table-striped">
+        <tr class="title-row">
+            <td>ID</td>
+            <td>用户名</td>
+            <td>日期</td>
+            <td>内容</td>
+            <td>电影名字</td>
+            <td>电影ID</td>
+        </tr>
+        <% comments.forEach(function(comment,i){ %>
+        <tr>
+            <td><%=  comment.id %></td>
+            <td><%=  comment.userName %></td>
+            <td><%=  comment.date %></td>
+            <td><%=  comment.content %></td>
+            <td><%=  comment.videoName %></td>
+            <td><%=  comment.uid %></td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+
+<%- include('paging.html',{type:'comment'}) %>
+</body>
+</html>

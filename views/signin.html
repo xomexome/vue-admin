@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>后台管理</title>
+
+    <!-- jq -->
+    <script src="/jq/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="/jq/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/jq/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!--css样式-->
+    <link rel="stylesheet" type="text/css" href="/css/public.css" />
+</head>
+<style>
+.head{
+    /* width: 1920px; */
+    height: 60px;
+    background-color: #212121;
+    /*不换行*/
+    white-space: nowrap;
+}
+.div-head a{
+    border-radius: 3px;
+    padding: 8px;
+    color: #bfbfbf;
+    text-decoration:none;    /*下划线*/
+    margin-right: 10px;
+}
+/*经过变色*/
+.div-head a:hover{
+    background-color: #ffffff20;
+    color: white;
+    border: 0px
+}
+.div-head{
+    margin: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top head">
+        <div class="div-head">
+            <div>
+                <a href="/">Home</a>
+                <a href="/upload">上传数据</a>
+                <a href="/adminUser">后台管理员列表</a>
+                <a href="/mobileUser">手机用户列表</a>
+                <a href="/comment">用户评论</a>
+                <a href="/like">喜欢/不喜欢</a>
+            </div>
+        </div>
+    </nav>
+    <div class="head" style="margin-bottom: 10px">占位</div>
+<style>
+.formborder{
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #bfbfbf;
+    padding: 15px;
+    width: 300px;
+    margin-top: 30px;
+}
+</style>
+<div class="formborder">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">用户名：</label>
+            <input type="userName" name="userName" class="form-control" placeholder="用户名">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">密码：</label>
+            <input type="password" name="password" class="form-control" placeholder="密码">
+        </div>
+        <!-- <div style="display: flex;justify-content: center">
+            <button class="btn btn-default btn-info" style="width: 100px" onclick="sub()">登录</button>
+        </div> -->
+    </form>
+    <div style="display: flex;justify-content: center">
+        <button class="btn btn-default btn-info" style="width: 100px;" onclick="sub()">登录</button>
+    </div>
+</div>
+</body>
+<script>
+//键盘enter
+$(document).keydown(function (event) {
+    //alert(event.keyCode);
+    //判断当event.keyCode 为37时（即左方面键），执行函数to_left();
+    //判断当event.keyCode 为39时（即右方面键），执行函数to_right();
+    if (event.keyCode == 13) {
+        sub();
+    }
+})
+
+var isAllow = true;
+function sub(){
+    //创建form对象
+    var formdata = new FormData();
+    ['userName', 'password'].forEach(function (val) {
+        formdata.append(val, $('input[name=' + val + ']').val())
+    });
+    //避免接口没完成，重复请求
+    if(!isAllow) return;
+    $.ajax({
+        type: "POST",//方法类型
+        dataType: "json",//预期服务器返回的数据类型
+        cache: false,
+        contentType: false,
+        processData: false,
+        url: location.pathname ,//url
+        data: formdata,
+        success: function (result) {
+            isAllow = false;
+            console.log(result);//打印服务端返回的数据(调试用)
+            if (result.code == 'false') {
+                alert(result.message);
+                window.location.href = '/signin';
+                isAllow=true;
+            }else{
+                window.location.href = '/';
+                isAllow=true;
+            }
+        }
+    })
+}
+</script>
+</html>

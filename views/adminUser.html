@@ -1,0 +1,32 @@
+<% include header.html %>
+<style>
+.title-row td{
+    font-weight: 600;
+}
+tr td{
+    white-space: nowrap;
+}
+/*居中*/
+td{
+    text-align: center;
+    width: 50%;
+}
+</style>
+<div>
+    <table class="table table-striped">
+        <tr class="title-row">
+            <td>ID</td>
+            <td>用户名</td>
+        </tr>
+        <% users.forEach(function(user,i){ %>
+        <tr>
+            <td><%=  user.id %></td>
+            <td><%=  user.username %></td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+
+<%- include('paging.html',{type:'adminUser'}) %>
+</body>
+</html>

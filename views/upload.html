@@ -1,0 +1,346 @@
+<% include header.html %>
+<style>
+.edit{
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #bfbfbf;
+    padding: 15px;
+    width: 70%
+}
+.div-display{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.div-display div{
+    width: 32%;
+}
+.div-display div:nth-child(2){
+    margin: 0px 2%;
+}
+/*不换行*/
+label{
+    white-space: nowrap;
+}
+/*边框样式*/
+.video{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.video input,img{
+    margin: 9px 12px;
+}
+/*媒体查询*/
+@media(max-width:700px){
+    .div-display div{
+        width: 100%;
+    }
+    .div-display div:nth-child(2){
+        margin: 15px 0px;
+    }
+}
+</style>
+<div class="edit">
+    <form enctype="multipart/form-data" class="form" id="formdata">
+        <div class="form-group">
+            <label>电影名称：</label>
+            <input type="text" class="form-control" placeholder="电影名称" name="videoName" autocomplete="off">
+        </div>
+        <div class="form-group div-display">
+            <div>
+                <label>电影国家：</label>
+                <select class="form-control" name="videoCountry">
+                    <option value="" disabled selected hidden>电影国家</option>
+                    <option value="中国">中国</option>
+                    <option value="美国">美国</option>
+                    <option value="英国">英国</option>
+                    <option value="法国">法国</option>
+                    <option value="日本">日本</option>
+                    <option value="泰国">泰国</option>
+                    <option value="韩国">韩国</option>
+                    <option value="印度">印度</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div>
+                <label>电影分类：</label>
+                <select class="form-control" name="videoClassify">
+                    <option value="" disabled selected hidden>电影分类</option>
+                    <option value="电影">电影</option>
+                    <option value="电视剧">电视剧</option>
+                    <option value="综艺">综艺</option>
+                    <option value="动漫">动漫</option>
+                    <option value="纪录片">纪录片</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div>
+                <label>上映时间：</label>
+                <input class="form-control" type="date" name="videoTime" placeholder="影视时间">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>电影封面：</label>
+            <div class="video">
+                <input type="file" name="videoFile" id="file" onchange="changepic(this)"  accept="image/gif,image/jpeg,image/jpg,image/png">
+                <img src="" id="show" width="200" style="display: none">
+            </div>
+        </div>
+        <div class="form-group div-display">
+            <div>
+                <label>电影评分：</label>
+                <select class="form-control" name="videoStar">
+                    <option value="" disabled selected hidden>电影评分</option>
+                    <option value="10.0">10.0</option>
+                    <option value="9.0">9.0</option>
+                    <option value="8.0">8.0</option>
+                    <option value="7.0">7.0</option>
+                    <option value="6.0">6.0</option>
+                    <option value="5.0">5.0</option>
+                    <option value="4.0">4.0</option>
+                    <option value="3.0">3.0</option>
+                    <option value="2.0">2.0</option>
+                    <option value="1.0">1.0</option>
+                </select>
+            </div>
+            <div>
+                <label>电影时长(分钟)：</label>
+                <input type="text" class="form-control" name="videoTimeLong" placeholder="影视时长">
+            </div>
+            <div>
+                <label>电影类型：</label>
+                <select class="form-control" name="videoType">
+                    <option value="" disabled selected hidden>电影类型</option>
+                    <option value="动作">动作</option>
+                    <option value="喜剧">喜剧</option>
+                    <option value="爱情">爱情</option>
+                    <option value="剧情">剧情</option>
+                    <option value="古装">古装</option>
+                    <option value="历史">历史</option>
+                    <option value="战争">战争</option>
+                    <option value="科幻">科幻</option>
+                    <option value="惊悚">惊悚</option>
+                    <option value="恐怖">恐怖</option>
+                    <option value="冒险">冒险</option>
+                    <option value="纪录片">纪录片</option>
+                    <option value="武侠">武侠</option>
+                    <option value="动画">动画</option>
+                    <option value="犯罪">犯罪</option>
+                    <option value="脱口秀">脱口秀</option>
+                    <option value="成人">成人</option>
+                    <option value="儿童">儿童</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>电影演员：</label>
+            <input type="text" class="form-control" placeholder="电影演员" name="videoActors" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label>电影描述：</label>
+            <textarea style="resize:vertical" placeholder="影视描述" class="form-control" name="videoDetail"></textarea>
+        </div>
+    </form>
+    <button class="btn btn-default" onclick="sub()">Submit</button>
+    <button class="btn btn-default" onclick="resetAll()">重置</button>
+</div>
+</body>
+<script>
+var file;
+var isAllow = true;
+//获取表单数据
+function sub(){
+    //创建form对象
+    var formdata = new FormData();
+    //获取图片数据
+    formdata.append('upload', file);
+    //避免接口没完成，重复请求
+    if(!isAllow) return;
+    ['videoName', 'videoTime', 'videoTimeLong', 'videoActors'].forEach(function (val) {
+        formdata.append(val, $('input[name=' + val + ']').val())
+    });
+    ['videoCountry', 'videoClassify', 'videoStar', 'videoType'].forEach(function (val) {
+        formdata.append(val, $('select[name=' + val + ']').val())
+    });
+    formdata.append('videoDetail',$('textarea').val())
+    try{
+        formdata.forEach(function(video,i){
+            // console.log(i+':'+video);
+            //判断有没输入数据
+            if(video=='' || video=='null' || video=='undefined'){
+                // console.log(i+':'+video);
+                // console.log(document.getElementsByName(i)[0].style.border);
+                // document.getElementsByName(i)[0].style.border='1px solid #e4000061';
+                // document.getElementsByName(i)[0].style.backgroundColor='#ffd0d0';
+                throw new Error("End");
+            }
+        });
+    }catch(e){
+        formdata.forEach(function(video,i){
+            // console.log(i+':'+video);
+            //判断有没输入数据
+            if(video=='' || video=='null'  || video=='undefined' ){
+                console.log(i+':'+video);
+                if(i=='upload'){
+                    $('input[name=videoFile]').parent().css('border','1px solid #e4000061');
+                    $('input[name=videoFile]').parent().css('backgroundColor','#ffd0d0');
+                }else{ 
+                    // console.log(document.getElementsByName(i)[0].style.border);
+                    document.getElementsByName(i)[0].style.border='1px solid #e4000061';
+                    document.getElementsByName(i)[0].style.backgroundColor='#ffd0d0';    
+                }
+            }
+        });
+        alert('请输入数据');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",//方法类型
+        dataType: "json",//预期服务器返回的数据类型
+        cache: false,
+        contentType: false,
+        processData: false,
+        url: location.pathname ,//url
+        data: formdata,
+        success: function (result) {
+            isAllow = false;
+            console.log(result);//打印服务端返回的数据(调试用)
+            if (result.code == '200') {
+                alert("上传成功");
+                window.location.href = '/';
+                formdata = new FormData();
+                isAllow=true;
+            }else{
+                alert('上传失败');
+                formdata = new FormData();
+            }
+        }
+    })
+}
+
+//表单重置
+function resetAll() {
+    document.getElementById('formdata').reset();
+    $('#show').css('display','none');
+    file='';
+}
+
+//图片
+function changepic() {
+    //图片预览
+    var reads= new FileReader();
+    file=document.getElementById('file').files[0];
+    if(file==undefined) return;
+    reads.readAsDataURL(file);
+    reads.onload=function (e) {
+        document.getElementById('show').src=this.result;
+    };
+
+    $('#show').css('display','block');
+}
+
+//判断输入框数据而变色
+function changevalue(data){
+    if($(data).val()==null){
+        $(data).css('border','1px solid #e4000061');
+        $(data).css('backgroundColor','#ffd0d0');
+    }else if($(data).val()==''){
+        $(data).css('border','1px solid #e4000061');
+        $(data).css('backgroundColor','#ffd0d0');
+    }else {
+        $(data).css('border','');
+        $(data).css('backgroundColor','');
+    }
+}
+
+$(function(){
+    $('select').css('color','#999999');
+    $('select').click(function(e){
+        // console.log(document.getElementsByName(e.target.name)[0]);
+        $(this).children('option:first-child')[0].innerText='';
+        this.style.color='#555';
+    })
+    $('.form-control').blur(function(){
+        // console.log($(this).val())
+        if($(this).val()==''){
+            $(this).css('border','1px solid #e4000061');
+            $(this).css('backgroundColor','#ffd0d0');
+        }
+    })
+    //实时监听输入框
+    $('input').keyup(function(){
+        // console.log($(this).val());
+        // if($(this).val()==''){
+        //     $(this).css('border','1px solid #e4000061');
+        //     $(this).css('backgroundColor','#ffd0d0');
+        // }else{
+        //     $(this).css('border','');
+        //     $(this).css('backgroundColor','');
+        // }
+        changevalue(this);
+    })
+    //input属性type='data'这样写才行
+    $('input[name=videoTime]').change(function(){
+        changevalue(this);
+    })
+    $('input[name=videoFile]').change(function(){
+        // console.log($(this).val())
+        if($(this).val()==''){
+            $(this).parent().css('border','1px solid #e4000061');
+            $(this).parent().css('backgroundColor','#ffd0d0');
+            $('#show').css('display','none');
+        }else{
+            $(this).parent().css('border','');
+            $(this).parent().css('backgroundColor','');
+        }
+    })
+    $('textarea').keyup(function(){
+        // console.log($(this).val())
+        // if($(this).val()==''){
+        //     $(this).css('border','1px solid #e4000061');
+        //     $(this).css('backgroundColor','#ffd0d0');
+        // }else{
+        //     $(this).css('border','');
+        //     $(this).css('backgroundColor','');
+        // }
+        changevalue(this);
+    })
+
+    var CountryNumber=0;
+    var ClassNumber=0;
+    var StarNumber=0;
+    var TypeNumber=0;
+    $('select').click(function(){
+        var number;
+        var name=$(this).attr('name');
+        switch(name){
+            case 'videoCountry':
+                CountryNumber++;
+                number=CountryNumber;
+                break;
+            case 'videoClassify':
+                ClassNumber++;
+                number=ClassNumber;
+                break;
+            case 'videoStar':
+                StarNumber++;
+                number=StarNumber;
+                break;
+            case 'videoType':
+                TypeNumber++;
+                number=TypeNumber;
+                break;
+        }
+        if(number>1){
+            changevalue(this);
+        }
+    })
+    $('select').blur(function(){
+        // var name=$(this).attr('name');
+        // console.log($(this).val());
+        changevalue(this);
+    })
+})
+</script>
+</html>

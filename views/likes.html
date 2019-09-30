@@ -1,0 +1,47 @@
+<% include header.html %>
+<style>
+.title-row td{
+    font-weight: 600;
+}
+tr td{
+    white-space: nowrap;
+}
+/*居中*/
+td{
+    text-align: center;
+    vertical-align: middle !important;
+    width: 16.5%;
+}
+</style>
+<!-- <script type="text/javaScript">
+// $(document).ready(){
+$(function(){
+    $("td").css('vertical-align','middle');
+})
+</script> -->
+<div>
+    <table class="table table-striped">
+        <tr class="title-row">
+            <td>ID</td>
+            <td>喜欢/不喜欢</td>
+            <td>用户名</td>
+            <td>电影名字</td>
+            <td>星级</td>
+            <td>电影ID</td>
+        </tr>
+        <% likes.forEach(function(like,i){ %>
+        <tr>
+            <td><%=  like.id %></td>
+            <td><%  like.iLike=='1'?a='喜欢':a='不喜欢' %><%= a %></td>
+            <td><%=  like.userName %></td>
+            <td><%=  like.videoName %></td>
+            <td><%=  like.star %></td>
+            <td><%=  like.uid %></td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+
+<%- include('paging.html',{type:'comment'}) %>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<% include header.html %>
+    hello, Express is very Good!
+    测试
+    <tbody>
+        <% videos.forEach(function(video){ %>
+          <tr>
+              <td><%=  video.name %></td>
+              <td><%=  video.country %></td>
+              <td><%=  video.classify %></td>
+              <td><%=  video.time1 %></td>
+              <td><img src="./images/<%= video.img %>" alt=""></td>
+              <td><%=  video.star %></td>
+              <td><%=  video.timelong %></td>
+              <td><%=  video.type %></td>
+              <td><%=  video.actors %></td>
+              <td><%=  video.detail %></td>
+              <td><a href="/edit/<%= video.id %>"><button class="ui primary button" title="编辑">Edit </button></a></td>
+              <td><button v-id="<%= video.id %>" class="ui primary button delete" title="删除">Delete </button></td>
+          </tr>
+        <% }) %>
+    </tbody>
+</body>
+</html>
+<!-- <% include footer.html %>   -->

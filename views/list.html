@@ -1,0 +1,77 @@
+<% include header.html %>
+<style>
+.title-row td{
+    font-weight: 600;
+}
+tr td{
+    white-space: nowrap;
+}
+/*居中*/
+td{
+    text-align: center;
+}
+td img{
+    width: 100px;
+}
+</style>
+<script type="text/javaScript">
+// $(document).ready(){
+$(function(){
+    $("td").css('vertical-align','middle');
+})
+</script>
+<div>
+    <table class="table table-striped">
+        <tr class="title-row">
+            <td>电影名称</td>
+            <td>电影国家</td>
+            <td>电影分类</td>
+            <td>上映时间</td>
+            <td>电影封面</td>
+            <td>电影评分</td>
+            <td>电影时长</td>
+            <td>电影类型</td>
+            <td>电影演员</td>
+            <td>电影描述</td>
+            <td>编辑</td>
+            <td>删除</td>
+        </tr>
+        <% videos.forEach(function(video,i){ %>
+        <tr>
+            <td><%=  video.name %></td>
+            <td><%=  video.country %></td>
+            <td><%=  video.classify %></td>
+            <td><%=  video.time1 %></td>
+            <td><img src="./images/<%= video.img %>.png" alt=""></td>
+            <td><%=  video.star %></td>
+            <td><%=  video.timelong %></td>
+            <td><%=  video.type %></td>
+            <td><%=  video.actors %></td>
+            <td style="white-space: initial"><%=  video.detail %></td>
+            <td><a class="btn btn-info" href="/edit/<%= video.id %>">Edit</a></td>
+            <td><button class="btn btn-info delete" v-id="<%= video.id %>">Delete</button></td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+<%- include('paging.html',{type:''}) %>
+</body>
+<script>
+$(function(){
+    $('.delete').click((e)=>{
+        $.ajax({
+            url:'/delete/'+e.target.getAttribute('v-id'),
+            type:'POST',
+            //当请求成功时调用的函数
+            success:function(res){
+                if(res.code=='200'){
+                    //刷新
+                    window.location.reload();
+                }
+            }
+        })
+    })
+})
+</script>
+</html>
+<!-- <% include footer.html %>   -->
